@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BookClubModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ContentOrder">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idOrder" Type="Int32" Nullable="false" />
+    <Property Name="idProduct" Type="Int32" Nullable="false" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="Self.FK_ContentOrder_Order" FromRole="ContentOrder" ToRole="Order" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_ContentOrder_Product" FromRole="ContentOrder" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Manufacturer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Product_Manufacturer" FromRole="Manufacturer" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="orderDate" Type="DateTime" Precision="0" />
+    <Property Name="amountDiscount" Type="Double" />
+    <Property Name="idPickUpPoint" Type="Int32" />
+    <Property Name="receiptCode" Type="Int32" />
+    <Property Name="deliveryTime" Type="Int32" />
+    <Property Name="idUser" Type="Int32" Nullable="false" />
+    <Property Name="idStatusOrder" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ContentOrder" Relationship="Self.FK_ContentOrder_Order" FromRole="Order" ToRole="ContentOrder" />
+    <NavigationProperty Name="PickUpPoint" Relationship="Self.FK_Order_PickUpPoint" FromRole="Order" ToRole="PickUpPoint" />
+    <NavigationProperty Name="StatusOrder" Relationship="Self.FK_Order_StatusOrder" FromRole="Order" ToRole="StatusOrder" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Order_User" FromRole="Order" ToRole="User" />
+  </EntityType>
+  <EntityType Name="PickUpPoint">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Order" Relationship="Self.FK_Order_PickUpPoint" FromRole="PickUpPoint" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="image" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="idManufacturer" Type="Int32" Nullable="false" />
+    <Property Name="price" Type="Int32" Nullable="false" />
+    <Property Name="discount" Type="Double" />
+    <Property Name="amount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ContentOrder" Relationship="Self.FK_ContentOrder_Product" FromRole="Product" ToRole="ContentOrder" />
+    <NavigationProperty Name="Manufacturer" Relationship="Self.FK_Product_Manufacturer" FromRole="Product" ToRole="Manufacturer" />
+  </EntityType>
+  <EntityType Name="StatusOrder">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="Self.FK_Order_StatusOrder" FromRole="StatusOrder" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="idTypeUser" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="Self.FK_Order_User" FromRole="User" ToRole="Order" />
+    <NavigationProperty Name="UserType" Relationship="Self.FK_User_UserType" FromRole="User" ToRole="UserType" />
+  </EntityType>
+  <EntityType Name="UserType">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_User_UserType" FromRole="UserType" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_ContentOrder_Order">
+    <End Role="Order" Type="Self.Order" Multiplicity="1" />
+    <End Role="ContentOrder" Type="Self.ContentOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="ContentOrder">
+        <PropertyRef Name="idOrder" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ContentOrder_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="ContentOrder" Type="Self.ContentOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="ContentOrder">
+        <PropertyRef Name="idProduct" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Manufacturer">
+    <End Role="Manufacturer" Type="Self.Manufacturer" Multiplicity="1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Manufacturer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="idManufacturer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_PickUpPoint">
+    <End Role="PickUpPoint" Type="Self.PickUpPoint" Multiplicity="0..1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PickUpPoint">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="idPickUpPoint" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_StatusOrder">
+    <End Role="StatusOrder" Type="Self.StatusOrder" Multiplicity="1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusOrder">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="idStatusOrder" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="idUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_UserType">
+    <End Role="UserType" Type="Self.UserType" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserType">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="idTypeUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BookClubEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ContentOrder" EntityType="Self.ContentOrder" />
+    <EntitySet Name="Manufacturer" EntityType="Self.Manufacturer" />
+    <EntitySet Name="Order" EntityType="Self.Order" />
+    <EntitySet Name="PickUpPoint" EntityType="Self.PickUpPoint" />
+    <EntitySet Name="Product" EntityType="Self.Product" />
+    <EntitySet Name="StatusOrder" EntityType="Self.StatusOrder" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <EntitySet Name="UserType" EntityType="Self.UserType" />
+    <AssociationSet Name="FK_ContentOrder_Order" Association="Self.FK_ContentOrder_Order">
+      <End Role="Order" EntitySet="Order" />
+      <End Role="ContentOrder" EntitySet="ContentOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ContentOrder_Product" Association="Self.FK_ContentOrder_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="ContentOrder" EntitySet="ContentOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Manufacturer" Association="Self.FK_Product_Manufacturer">
+      <End Role="Manufacturer" EntitySet="Manufacturer" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_PickUpPoint" Association="Self.FK_Order_PickUpPoint">
+      <End Role="PickUpPoint" EntitySet="PickUpPoint" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_StatusOrder" Association="Self.FK_Order_StatusOrder">
+      <End Role="StatusOrder" EntitySet="StatusOrder" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_User" Association="Self.FK_Order_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_UserType" Association="Self.FK_User_UserType">
+      <End Role="UserType" EntitySet="UserType" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
