@@ -28,3 +28,11 @@ C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\BookClub.exe
 C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\BookClub.pdb
 C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\TrashWindow.g.cs
 C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\TrashWindow.baml
+C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\TempTrashWindow.g.cs
+C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\TempTrashWindow.baml
+C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\EditWindow.g.cs
+C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\ManagerWindow.g.cs
+C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\EditWindow.baml
+C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\ManagerWindow.baml
+C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\AdminWindow.g.cs
+C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\obj\Debug\AdminWindow.baml

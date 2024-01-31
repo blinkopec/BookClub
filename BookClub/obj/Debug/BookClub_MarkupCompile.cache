@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\viplo\workspace\last subject\2\BookClub\BookClub\App.xaml
-51471648357
+9713051875
 2-1957146511
-23-346368807
+301627540184
 18-1323310381
-AuthorizationWindow.xaml;AuthorizedWindow.xaml;BuyWindow.xaml;MainWindow.xaml;TrashWindow.xaml;
+AdminWindow.xaml;AuthorizationWindow.xaml;AuthorizedWindow.xaml;BuyWindow.xaml;EditWindow.xaml;MainWindow.xaml;ManagerWindow.xaml;TempTrashWindow.xaml;TrashWindow.xaml;
 
 False
 

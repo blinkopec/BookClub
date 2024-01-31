@@ -12,6 +12,7 @@ namespace BookClub
     public class TrashProduct
     {
         public int id { get; set; }
+        public int idOrder { get; set; }
         public string name { get; set; }
         public BitmapImage image { get; set; }
         public string description { get; set; }
@@ -21,28 +22,29 @@ namespace BookClub
         public int[] amountArr { get; set; }
         public int amount { get; set; }
 
-        public TrashProduct(int id, string name, byte[] image, string description, int idManafacturer,
+        public TrashProduct(int id, int idOrder, string name, byte[] image, string description, int idManafacturer,
             int price, Nullable<double> discount, int amount) 
         {
             this.id = id;
+            this.idOrder = idOrder;
             this.name = name;
             this.image = ConvertToByteImage(image);
             this.description = description;
             this.idManufacturer = idManafacturer;
             this.price = price;
             this.discount = discount;
-            this.amountArr = ConvertAmountToArray(id,amount);
+            this.amountArr = ConvertAmountToArray(id);
             this.amount = amount;
         }
 
-        private int[] ConvertAmountToArray(int idProd, int amnt)
+        private int[] ConvertAmountToArray(int idProd)
         {
             var maxAmount = BookClubEntities.GetContext().Product
                 .Where(b => b.id == idProd)
                 .Select(b => b.amount)
                 .Single();
 
-                maxAmount += 1 + amnt;
+                maxAmount += 1;
                 int[] array = new int[maxAmount];
                 for (int i = 0; i < maxAmount; i++)
                 {

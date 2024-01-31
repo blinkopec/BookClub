@@ -45,12 +45,24 @@ namespace BookClub
                     trueLogin = true;
                     if (user.password == password)
                     {
+                        UserInfo.idUser = user.id;
                         UserInfo.authationType = AuthorizationType.autorization;
+                        if (user.idTypeUser == 2)
+                        {
+                            ManagerWindow mw = new ManagerWindow();
+                            mw.Show();
+                            this.Close();
+                        }
                         if (user.idTypeUser == 3)
                         {
-                            UserInfo.idUser= user.id;
                             AuthorizedWindow aw = new AuthorizedWindow();
                             aw.Show();
+                            this.Close();
+                        }
+                        if (user.idTypeUser == 1)
+                        {
+                            AdminWindow mw = new AdminWindow();
+                            mw.Show();
                             this.Close();
                         }
                     }

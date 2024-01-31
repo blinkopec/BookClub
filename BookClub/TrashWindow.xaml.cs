@@ -19,18 +19,32 @@ namespace BookClub
     /// </summary>
     public partial class TrashWindow : Window
     {
+        List<TrashProduct> newprd;
         private int idOrder { get; set; }
         public TrashWindow(int idOrder)
         {
             InitializeComponent();
+            
+            newprd = new List<TrashProduct>();
             this.idOrder = idOrder;
-            GetProducts();
 
-
+            if (TempTrash.Products.Count != null)
+            {
+                GetProductsWithTempTrash();
+            }
+            else
+                GetProducts();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            if (BookClubEntities.GetContext().ContentOrder.Where(b=>b.idOrder == this.idOrder).ToList().Count() <= 0 )
+            {
+                var ordr = BookClubEntities.GetContext().Order
+                    .Where(b => b.id == this.idOrder).First();
+                BookClubEntities.GetContext().Order.Remove(ordr);
+                BookClubEntities.GetContext().SaveChanges();
+            }
             AuthorizedWindow aw = new AuthorizedWindow();
             aw.Show();
             this.Close();
@@ -50,68 +64,75 @@ namespace BookClub
             var button = sender as Button;
             if (button == null)
                 return;
-            var item = button.DataContext as Product;
+            var item = button.DataContext as TrashProduct;
 
             if (item == null)
                 return;
 
-            List<ContentOrder> contents = BookClubEntities.GetContext().ContentOrder.ToList();
-            foreach (var contentOrder in contents)
+            var product = BookClubEntities.GetContext().ContentOrder
+                .Where(b => b.idProduct == item.id && b.idOrder == this.idOrder)
+                .Single();
+
+            BookClubEntities.GetContext().ContentOrder.Remove(product);
+            BookClubEntities.GetContext().SaveChanges();
+            
+            GetProducts();
+            
+        }
+
+        private void GetProductsWithTempTrash()
+        {
+            var contents = BookClubEntities.GetContext().ContentOrder.Where(b => b.idOrder == this.idOrder).ToList();
+            foreach (var prd in TempTrash.Products)
             {
-                if (contentOrder.idOrder == this.idOrder)
+                foreach (var content in contents)
                 {
-                    if (contentOrder.idProduct == item.id)
+                    if (content.idProduct == prd.Product.id)
                     {
-                        BookClubEntities.GetContext().ContentOrder.Remove(contentOrder);
+                        content.amount += prd.amount;
                         BookClubEntities.GetContext().SaveChanges();
+                    }
+                    else
+                    {
+                        ContentOrder c = new ContentOrder() { idOrder=this.idOrder , idProduct = prd.Product.id, amount = prd.amount };
+                        BookClubEntities.GetContext().ContentOrder.Add(c);
+                        BookClubEntities.GetContext().SaveChanges(); 
                     }
                 }
             }
+
+            TempTrash.Products.Clear();
             GetProducts();
+
         }
 
         private void GetProducts()
         {
-            List<Order> orders = BookClubEntities.GetContext().Order.Where(b => b.idUser == UserInfo.idUser).ToList();
-
-            Order trashOrder = new Order();
-            bool trueOrder = false;
-            foreach (Order order in orders)
-            {
-                if (order.idStatusOrder == 3)
-                {
-                    trueOrder = true;
-                    trashOrder = order;
-                }
-            }
-            if (trueOrder)
-            {
-                List<TrashProduct> newprd = new List<TrashProduct>();
-                this.idOrder = trashOrder.id;
-                var productsInTrash = BookClubEntities.GetContext().ContentOrder
-                .Where(b => b.idOrder == trashOrder.id)
+            itemsControl.ItemsSource = null;
+            newprd.Clear();
+            var productsInTrash = BookClubEntities.GetContext().ContentOrder
+                .Where(b => b.idOrder ==  this.idOrder)
                 .ToList();
-                foreach (var prod in productsInTrash)
-                {
-                    using (var context = new BookClubEntities())
-                    {
-                        foreach (var prd in context.Product)
-                        {
-                            if (prd.id == prod.idProduct)
-                            {
-                                newprd.Add(new TrashProduct(prd.id, prd.name, prd.image, prd.description, prd.idManufacturer, prd.price, prd.discount, prod.amount));
-                            }
-                        }
 
-                    }
+            if (productsInTrash.Count != 0)
+            {
+                foreach (var prod in BookClubEntities.GetContext().ContentOrder
+                    .Where(b => b.idOrder == this.idOrder).ToList())
+                {
+                    var prd = prod.Product;
+                    newprd.Add(new TrashProduct(prd.id, this.idOrder,prd.name, prd.image,
+                                    prd.description, prd.idManufacturer, prd.price, prd.discount, prod.amount));
                 }
                 itemsControl.ItemsSource = newprd;
             }
             else
             {
                 MessageBox.Show("Корзина пуста");
+                itemsControl.ItemsSource = null;
             }
+            GeneratePrice();
         }
+
 
         private void AmountBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -125,39 +146,48 @@ namespace BookClub
             int value = (int)comboBox.SelectedValue;
             if (value == 0)
             {
-                using (var context = new BookClubEntities())
+                foreach (var contentOrder in BookClubEntities.GetContext().ContentOrder.Where(b => b.idOrder == this.idOrder
+                        && b.idProduct == trashProduct.id).ToList())
                 {
-                    foreach (var contentOrder in context.ContentOrder)
-                    {
-                        if (contentOrder.idOrder == this.idOrder)
-                        {
-                            if (contentOrder.idProduct == trashProduct.id)
-                            {
-                                BookClubEntities.GetContext().ContentOrder.Remove(contentOrder);
-                                BookClubEntities.GetContext().SaveChanges();
-                            }
-                        }
-                    }
+                    BookClubEntities.GetContext().ContentOrder.Remove(contentOrder);
+                    BookClubEntities.GetContext().SaveChanges();
+                    GetProducts();
                 }
             }
             else
             {
-                using (var context = new BookClubEntities())
+                foreach (var contentOrder in BookClubEntities.GetContext().ContentOrder.Where(b => b.idOrder == this.idOrder
+                        && b.idProduct == trashProduct.id).ToList())
                 {
-                    foreach (var contentOrder in context.ContentOrder)
-                    {
-                        if (contentOrder.idOrder == this.idOrder)
-                        {
-                            if (contentOrder.idProduct == trashProduct.id)
-                            {
-                                contentOrder.amount = value;
-                            }
-                        }
-                    }
-                    context.SaveChanges();
+                    contentOrder.amount = value;
+                    GeneratePrice();
+                }
+                BookClubEntities.GetContext().SaveChanges();
+            }
+           
+        }
+        
+        private void GeneratePrice()
+        {
+            // КОЛИЧЕСТВО
+            int price = 0;
+            float discount = 0;
+           
+            foreach (var prd in newprd)
+            {
+                for (int i = 0; i < prd.amount; i++)
+                {
+                    price += prd.price;
+                    if (prd.discount != null)
+                        discount += (float)(prd.price * prd.discount) / 100;
                 }
             }
-            
+
+            PriceLabel.Content = price + "₽";
+            DiscountLabel.Content = discount + "₽";
         }
     }
+    
 }
+    
+

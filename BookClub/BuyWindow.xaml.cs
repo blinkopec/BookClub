@@ -34,27 +34,29 @@ namespace BookClub
             if (PickUpPointBox.SelectedValue != null)
             {
                 Random rnd = new Random();
-                using (var context = new BookClubEntities())
-                {
-                    foreach (var ordr in context.Order)
-                    {
-                        if (ordr.id == this.order.id)
-                        {
-                            ordr.idPickUpPoint = ConvertCityToId(PickUpPointBox.SelectedValue.ToString());
-                            ordr.orderDate = DateTime.Now;
-                            ordr.receiptCode = GenerateReceiptCode();
-                            ordr.idStatusOrder = 2;
-                            ordr.deliveryTime = rnd.Next(1, 9);
+                var ordr = BookClubEntities.GetContext().Order
+                    .Where(b => b.id == this.order.id)
+                    .Single();
+                ordr.idPickUpPoint = ConvertCityToId(PickUpPointBox.SelectedValue.ToString());
+                ordr.orderDate = DateTime.Now;
+                ordr.receiptCode = GenerateReceiptCode();
+                ordr.idStatusOrder = 2;
+                ordr.deliveryTime = rnd.Next(1, 9);
 
-                            MessageBox.Show("Ваш код получения: " + ordr.receiptCode + "\nОжидаемое время доставки: " + ordr.deliveryTime);
-                        }
-                    }
-                    context.SaveChanges();
-                }
+                BookClubEntities.GetContext().SaveChanges();
+
+                MessageBox.Show("Ваш код получения: " + ordr.receiptCode + "\nОжидаемое время доставки: " + ordr.deliveryTime
+                    + "\n Дата заказа: " + DateTime.Now);
+
+                AuthorizedWindow aw = new AuthorizedWindow();
+                aw.Show();
+                this.Close();
+
             }
-            AuthorizedWindow aw = new AuthorizedWindow();
-            aw.Show();
-            this.Close();
+            else
+            {
+                MessageBox.Show("Выберите место доставки");
+            }
         }
 
         private int ConvertCityToId(string city)

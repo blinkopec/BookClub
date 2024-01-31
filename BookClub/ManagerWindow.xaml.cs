@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,17 +15,17 @@ using System.Windows.Shapes;
 namespace BookClub
 {
     /// <summary>
-    /// Логика взаимодействия для AuthorizedWindow.xaml
+    /// Логика взаимодействия для ManagerWindow.xaml
     /// </summary>
-    public partial class AuthorizedWindow : Window
+    public partial class ManagerWindow : Window
     {
-        public AuthorizedWindow()
+        public ManagerWindow()
         {
             InitializeComponent();
             itemsControl.ItemsSource = GenerateProductList();
 
             var orders = BookClubEntities.GetContext().Order
-                .Where(d=>d.idUser == UserInfo.idUser)
+                .Where(d => d.idUser == UserInfo.idUser)
                 .ToList();
 
             foreach (var order in orders)
@@ -45,9 +42,9 @@ namespace BookClub
 
         private void TrashButton_Click(object sender, RoutedEventArgs e)
         {
-                TrashWindow tw = new TrashWindow(GetEmptyOrder().id);
-                tw.Show();
-                this.Close();
+            TrashWindow tw = new TrashWindow(GetEmptyOrder().id);
+            tw.Show();
+            this.Close();
         }
 
         private void BuyButton_Click(object sender, RoutedEventArgs e)
@@ -71,24 +68,24 @@ namespace BookClub
                 {
                     emptyContent = false;
                     content.amount += 1;
-                   
+
                     BookClubEntities.GetContext().SaveChanges();
                 }
             }
             if (emptyContent)
             {
                 ContentOrder contentOrder = new ContentOrder() { idOrder = trashOrder.id, idProduct = product.id, amount = 1 };
-                
+
                 BookClubEntities.GetContext().ContentOrder.Add(contentOrder);
                 BookClubEntities.GetContext().SaveChanges();
             }
             TrashButton.IsEnabled = true;
             itemsControl.ItemsSource = GenerateProductList();
         }
-    
+
         private List<Product> GenerateProductList()
         {
-            List<Product> result= new List<Product>();
+            List<Product> result = new List<Product>();
 
             var products = BookClubEntities.GetContext().Product.ToList();
 
@@ -98,12 +95,14 @@ namespace BookClub
                 {
                     if (product.discount <= 0)
                     {
-                        Product product1 = new Product() {
+                        Product product1 = new Product()
+                        {
                             amount = product.amount,
                             id = product.id,
                             name = product.name,
                             image = product.image,
-                            description = product.description, price = product.price,
+                            description = product.description,
+                            price = product.price,
                             idManufacturer = product.idManufacturer,
                             discount = 0
                         };
@@ -135,6 +134,13 @@ namespace BookClub
             return ordr;
 
 
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditWindow ew = new EditWindow(0);
+            ew.Show();
+            this.Close();
         }
     }
 }

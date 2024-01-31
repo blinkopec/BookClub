@@ -25,11 +25,34 @@ namespace BookClub
             InitializeComponent();
             UserInfo.authationType = AuthorizationType.unauthorized;
             itemsControl.ItemsSource = BookClubEntities.GetContext().Product.ToList();
+
+            if (TempTrash.Products.Count == 0)
+                TrashButton.IsEnabled = false;
         }
 
         private void BuyButton_Click(object sender, RoutedEventArgs e)
         {
+            var button = sender as MenuItem;
+            if (button == null)
+                return;
+            var product = button.DataContext as Product;
 
+            if (product == null)
+                return;
+
+            TrashButton.IsEnabled = true;
+            if (TempTrash.Products.Where(b=>b.Product.id == product.id).Count() > 0)
+            {
+                foreach (var tw in TempTrash.Products)
+                {
+                    if (tw.Product.id == product.id)
+                    {
+                        tw.amount += 1;
+                    }
+                }
+            }
+            else
+                TempTrash.Products.Add(new TempProduct(product, 1));
         }
 
         private void AuthorizationButton_Click(object sender, RoutedEventArgs e)
@@ -41,7 +64,9 @@ namespace BookClub
 
         private void TrashButton_Click(object sender, RoutedEventArgs e)
         {
-
+            TempTrashWindow ttw = new TempTrashWindow();
+            ttw.Show();
+            this.Close();
         }
     }
 }
