@@ -11,6 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BookClub.Manager;
+using BookClub.Admin;
+using BookClub.Logic;
+using BookClub.Customer;
 
 namespace BookClub
 {
@@ -24,6 +28,11 @@ namespace BookClub
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Обработик событий, переход на окно гостя
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mw = new MainWindow();
@@ -31,6 +40,11 @@ namespace BookClub
             this.Close();
         }
 
+        /// <summary>
+        /// Обработик событий, авторизация
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             string login = loginBox.Text;

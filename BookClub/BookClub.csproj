@@ -64,7 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AdminWindow.xaml.cs">
+    <Compile Include="Admin\AdminWindow.xaml.cs">
       <DependentUpon>AdminWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="AuthorizationWindow.xaml.cs">
@@ -73,11 +73,11 @@
     <Compile Include="ContentOrder.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="EditableOrder.cs" />
-    <Compile Include="EditWindow.xaml.cs">
+    <Compile Include="Logic\EditableOrder.cs" />
+    <Compile Include="Manager\EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManagerWindow.xaml.cs">
+    <Compile Include="Manager\ManagerWindow.xaml.cs">
       <DependentUpon>ManagerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Manufacturer.cs">
@@ -113,23 +113,23 @@
     <Compile Include="sysdiagrams.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="TempProduct.cs" />
-    <Compile Include="TempTrash.cs" />
-    <Compile Include="TempTrashWindow.xaml.cs">
+    <Compile Include="Logic\TempProduct.cs" />
+    <Compile Include="Logic\TempTrash.cs" />
+    <Compile Include="Customer\TempTrashWindow.xaml.cs">
       <DependentUpon>TempTrashWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TrashProduct.cs" />
-    <Compile Include="TrashWindow.xaml.cs">
+    <Compile Include="Logic\TrashProduct.cs" />
+    <Compile Include="Customer\TrashWindow.xaml.cs">
       <DependentUpon>TrashWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserInfo.cs" />
+    <Compile Include="Logic\UserInfo.cs" />
     <Compile Include="UserType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Page Include="AdminWindow.xaml">
+    <Page Include="Admin\AdminWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,15 +137,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AuthorizedWindow.xaml">
+    <Page Include="Customer\AuthorizedWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="BuyWindow.xaml">
+    <Page Include="Customer\BuyWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="EditWindow.xaml">
+    <Page Include="Manager\EditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -157,25 +157,25 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AuthorizedWindow.xaml.cs">
+    <Compile Include="Customer\AuthorizedWindow.xaml.cs">
       <DependentUpon>AuthorizedWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BuyWindow.xaml.cs">
+    <Compile Include="Customer\BuyWindow.xaml.cs">
       <DependentUpon>BuyWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ManagerWindow.xaml">
+    <Page Include="Manager\ManagerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TempTrashWindow.xaml">
+    <Page Include="Customer\TempTrashWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TrashWindow.xaml">
+    <Page Include="Customer\TrashWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -229,5 +229,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

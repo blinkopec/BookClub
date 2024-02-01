@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BookClub.Customer;
+using BookClub.Logic;
 
 namespace BookClub
 {
@@ -30,6 +32,11 @@ namespace BookClub
                 TrashButton.IsEnabled = false;
         }
 
+        /// <summary>
+        /// Обработик событий, добавляет товар в корзину
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BuyButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as MenuItem;
@@ -55,6 +62,11 @@ namespace BookClub
                 TempTrash.Products.Add(new TempProduct(product, 1));
         }
 
+        /// <summary>
+        /// Обработик событий, переход на окно авторизации
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AuthorizationButton_Click(object sender, RoutedEventArgs e)
         {
             AuthorizationWindow aw = new AuthorizationWindow();
@@ -62,6 +74,11 @@ namespace BookClub
             this.Close();
         }
 
+        /// <summary>
+        /// Обработик событий, переход на окно корзины
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TrashButton_Click(object sender, RoutedEventArgs e)
         {
             TempTrashWindow ttw = new TempTrashWindow();

@@ -1,0 +1,73 @@
+﻿<Window x:Class="BookClub.Customer.TempTrashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookClub"
+        mc:Ignorable="d"
+        Title="BookClub" Height="400" Width="500"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="400" MinHeight="500"
+        MaxHeight="450" MaxWidth="550">
+    <Window.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="ProductList">
+                <Button Background="Pink" Width="400" Height="150" Margin="0,10,0,0" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image x:Name="imgTemplate" Source="{Binding image}" Grid.Column="0"/>
+                        <StackPanel Grid.Column="1">
+                            <Label x:Name="nameTemplateLabel" FontWeight="Bold" FontSize="16" Content="{Binding name}"/>
+                            <TextBlock x:Name="descriptionTemplateTextBlock" TextWrapping="Wrap" Text="{Binding description}" />
+                            <TextBlock x:Name="priceTemplateBlock" Text="{Binding price}">
+                             <Run>₽</Run>
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Количество: "/>
+                                <ComboBox x:Name="AmountBox" Width="100" ItemsSource="{Binding amountArr}" SelectedValue="{Binding amount}" SelectionChanged="AmountBox_SelectionChanged"/>
+                            </StackPanel>
+                            <Button Click="Button_Click" Content="Удалить" Width="75"/>
+                        </StackPanel>
+
+
+                    </Grid>
+                </Button>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <Button Content="Назад" Grid.Row="0" x:Name="BackButton" Click="BackButton_Click" Height="35" HorizontalAlignment="Left"/>
+
+        <ScrollViewer x:Name="scrollViewer" Grid.Row="1">
+            <ItemsControl x:Name="itemsControl"  ItemTemplate="{StaticResource ProductList}"/>
+        </ScrollViewer>
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Content="Цена: " />
+            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" x:Name="PriceLabel" />
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Content="Скидка: "/>
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" x:Name="DiscountLabel"/>
+            <Button Content="Войти" Grid.RowSpan="2" Grid.Column="1" x:Name="EnterButton" HorizontalAlignment="Right" Click="EnterButton_Click" Height="35" Width="75" />
+        </Grid>
+
+    </Grid>
+</Window>
